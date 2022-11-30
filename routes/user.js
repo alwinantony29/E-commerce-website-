@@ -1,39 +1,19 @@
 var express = require('express');
 var router = express.Router();
+var productHelper=require('../helpers/product-helpers')
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  let products=[
-    {
-      name:"blackforest",
-      category:"cake",
-      description:"nice chocolate cake",
-      image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcYG6vZfOMuWeC8Sfg73cOLbqDdZ-FmDARGQ&usqp=CAU"
-    },
-    {
-
-      name:"whiteforest",
-      category:"cake",
-      description:"nice cake",
-      image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRijAXx0uX6pjAseTvf2O-RGOA_-o8G6sR6aA&usqp=CAU"
-
-    },
-    {
-      name:"blackforest",
-      category:"cake",
-      description:"nice chocolate cake",
-      image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcYG6vZfOMuWeC8Sfg73cOLbqDdZ-FmDARGQ&usqp=CAU"
-    },
-    {
-
-      name:"whiteforest",
-      category:"cake",
-      description:"nice cake",
-      image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRijAXx0uX6pjAseTvf2O-RGOA_-o8G6sR6aA&usqp=CAU"
-
-    },
-  ]
-  res.render('index', {products,admin:false});
+  
+  productHelper.getAllProducts().then((products)=>{
+    console.log('hiiii');
+    console.log(products);
+    console.log('bye');
+    res.render('index', {products,admin:false});
+  
+  })
+  
 });
 
 module.exports = router;
