@@ -18,10 +18,10 @@ router.get('/add-product',function(req,res){
 router.post('/add-product',(req,res)=>{
   
   
-  productHelpers.addProduct(req.body,(id)=>{
-    console.log(id);
+  productHelpers.addProduct(req.body,(_id)=>{
+    console.log(_id);
     let image=req.files.Image
-    image.mv('public/product-images/'+id+'.jpg',(err,done)=>{
+    image.mv('public/product-images/'+_id+'.jpg',(err,done)=>{
       if(!err){
         res.render("admin/add-product") 
       }
