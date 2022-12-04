@@ -17,8 +17,8 @@
                     <textarea name="Description" class="form-control" title="" id="">{{product.Description}}
                     </textarea>
                      <label for="">Image</label>
-                     <img src="/product-images/{{product._id}}.jpg" style="width: 100px;height: auto;" alt="" srcset="">
-                    <input type="file" name="Image" class="form-control" id=""  >
+                     <img class="pt-2" id="imgView" src="/product-images/{{product._id}}.jpg" style="width: 100px;height: auto;" alt="" srcset="">
+                    <input onchange="viewImage(event)" type="file" name="Image" class="form-control" id=""  >
 
                     <button type="submit" class="btn btn-success mt-4">submit</button>
                 </form>
@@ -26,3 +26,9 @@
         </div>
     </div>
 </section>
+
+<script>
+    function viewImage(event){
+        document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

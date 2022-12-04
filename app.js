@@ -9,6 +9,7 @@ var adminRouter = require('./routes/admin');
 const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars');
 var app = express();
+const { allowinsecurePrototypeAcess}=require('@handlebars/allow-prototype-access');
 var fileUpload=require('express-fileupload')
 var db=require('./config/connection')
 var session=require('express-session')
