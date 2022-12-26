@@ -70,10 +70,11 @@ router.get('/cart',verifyLogin,async(req,res)=>{
   res.render('user/cart',{user,products})
   console.log(products);
 })
-router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
-  
+router.get('/add-to-cart/:id',(req,res)=>{
+   console.log("api call");
   userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
-    res.redirect('/')
+   res.json({status:true})
+    // res.redirect('/')
   })
 })
 module.exports = router;
