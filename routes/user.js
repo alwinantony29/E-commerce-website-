@@ -1,4 +1,6 @@
+const { response } = require('express');
 var express = require('express');
+const async = require('hbs/lib/async');
 var router = express.Router();
 var productHelper=require('../helpers/product-helpers')
 const userHelpers=require('../helpers/user-helpers')
@@ -66,8 +68,8 @@ router.get('/logout',(req,res)=>{
 router.get('/cart',verifyLogin,async(req,res)=>{
   let user=req.session.user
    let products=await userHelpers.getCartProducts(req.session.user._id)
-  
-  res.render('user/cart',{user,products})
+   let total=await userHelpers.getTotalAmount(req.session.user._id)
+  res.render('user/cart',{user,products,total})
   
 })
 router.get('/add-to-cart/:id',(req,res)=>{
@@ -78,9 +80,19 @@ router.get('/add-to-cart/:id',(req,res)=>{
   })
 })
 router.post('/change-product-quantity',(req,res,next)=>{
-  userHelpers.changeProductQuantity(req.body).then(()=>{
-    
+  userHelpers.changeProductQuantity(req.body).then((response)=>{
+
+    res.json(response)
   })
+})
+router.post('/remove-product',(req,res,next)=>{
+  userHelpers.removeProduct(req.body).then((response)=>{
+    res.json(response)
+  })
+})
+router.get('/place-order',verifyLogin, async(req,res)=>{
+  let total=await userHelpers.getTotalAmount(req.session.user._id)
+  res.render('user/place-order',{total})
 })
 module.exports = router;
  

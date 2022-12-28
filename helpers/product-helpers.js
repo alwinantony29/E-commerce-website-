@@ -2,10 +2,13 @@
 var db=require('../config/connection')
 var collection=require('../config/collections');
 const { response } = require('express');
+const { log } = require('debug/src/node');
 var objectId=require('mongodb').ObjectId
 module.exports={
     addProduct:(product,callback)=>{
         console.log(product);
+        product.Price=parseFloat(product.Price)
+        
         db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data)=>{
     
            

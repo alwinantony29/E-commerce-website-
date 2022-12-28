@@ -2,6 +2,7 @@ var db=require('../config/connection')
 var collection=require('../config/collections')
 const bcrypt=require('bcrypt')
 const { response } = require('express')
+const { log } = require('debug/src/browser')
 var objectId=require('mongodb').ObjectId
 
 module.exports={
@@ -136,7 +137,7 @@ module.exports={
                 //     }
                 // }
             ]).toArray()
-            console.log(cartItems);
+            
             resolve(cartItems);
         })
     },
@@ -151,19 +152,82 @@ module.exports={
         })
     },
     changeProductQuantity:(details)=>{
-        count=parseInt(details.count)
+        let count=parseInt(details.count)
+        let quantity=parseInt(details.quantity)
+        console.log(count,quantity);
+        console.log(details);
         return new Promise((resolve,reject)=>{
+            if(count==-1 && quantity==1){
+                console.log('ith thanne');
+                db.get().collection(collection.CART_COLLECTION).updateOne({_id:objectId(details.cart)},
+                {
+                    $pull:{products:{item:objectId(details.product)}}
+                }).then((response)=>{
+                    console.log(response);
+                    resolve({removeProduct:true})
+                })
+            }else{
+                db.get().collection(collection.CART_COLLECTION)
+                .updateOne({_id:objectId(details.cart),'products.item':objectId(details.product)},
+                {
+                    $inc:{'products.$.quantity':count}
+                }).then((response)=>{
+                    console.log(response);
+                    resolve(true)
+                })
+            }
 
-            db.get().collection(collection.CART_COLLECTION)
-            .updateOne({_id:objectId(details.cart),'products.item':objectId(details.product)},
-            {
-                $inc:{'products.$.quantity':count}
-            }).then((response)=>{
-                console.log(response);
-                resolve()
-            })
+           
 
         })
+    },
+    removeProduct:(details)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.CART_COLLECTION).updateOne({_id:objectId(details.cart)},
+                {
+                    $pull:{products:{item:objectId(details.product)}}
+                }).then((response)=>{
+                    console.log(response);
+                    resolve({removeProduct:true})
+        })
+    })},
+    getTotalAmount:(userId)=>{
+
+        return new Promise(async(resolve,reject)=>{
+            let total=await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match:{user:objectId(userId)}
+                },{
+                    $unwind:'$products'
+                },{
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
+                    }
+
+                },{
+                    $lookup:{
+                        from:collection.PRODUCT_COLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
+                },{
+                    $project:{
+                        item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+                    }
+                },{
+                    $group:{
+                        _id:null,
+                        total:{$sum:{$multiply:['$quantity','$product.Price']}}
+                    }
+                }
+                
+            ]).toArray()
+            console.log("total:"+total[0].total);
+            resolve(total[0].total);
+        })
+        
     }
 
 }
