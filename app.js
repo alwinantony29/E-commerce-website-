@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-app.use(session({secret:"adisakke",cookie:{maxAge:600000}}))
+app.use(session({secret:"adisakke",cookie:{maxAge:6000000}}))
 db.connect((err)=>{
   if(err) console.log("connection error"+err);
   else console.log("Database connected to 27017");

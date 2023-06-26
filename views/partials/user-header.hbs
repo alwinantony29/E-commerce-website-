@@ -17,15 +17,18 @@
           <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Products</a>
+                <a class="nav-link active" aria-current="page" href="/">Products</a>
+              </li>
+              {{#if user}}
+              {{#if cartCount}}
+              <li class="nav-item">
+                <a class="nav-link " href="/cart">Cart<span class=" top-1 start-100 translate-middle rounded-pill  badge bg-primary" id="cart-count"> {{cartCount}}</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/cart">Cart<span class="badge badge-success bg-primary" id="cart-count"> {{cartCount}}</span></a>
+                <a class="nav-link active" href="/orders">My Orders</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="#">My Orders</a>
-              </li>
-             
+             {{/if}}
+             {{/if}}
             </ul>
             <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -3,7 +3,15 @@ const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 var productHelper=require('../helpers/product-helpers')
 
-/* GET users listing. */
+router.get('/login',(req,res,next)=>{
+  
+  if(req.session.user){
+    res.redirect('/')
+  }else
+  res.render('./user/login',{"loginErr":req.session.userloginErr});
+  req.session.user.loginErr=false
+})
+
 router.get('/', function(req, res, next) {
 productHelper.getAllProducts().then((products)=>{
   
@@ -12,7 +20,7 @@ productHelper.getAllProducts().then((products)=>{
 })
 });
 router.get('/add-product',function(req,res){
-  res.render('admin/add-product')
+  res.render('admin/add-product',{admin:true})
 })
 router.post('/add-product',(req,res)=>{
   
@@ -22,7 +30,7 @@ router.post('/add-product',(req,res)=>{
     let image=req.files.Image
     image.mv('public/product-images/'+_id+'.jpg',(err,done)=>{
       if(!err){
-        res.render("admin/add-product") 
+        res.render("admin/",{admin:true}) 
       }
       else{
         console.log(err);
@@ -41,7 +49,7 @@ router.get('/delete-product/:id',(req,res)=>{
 router.get('/edit-product/:id',async (req,res)=>{
   let product=await productHelpers.getProductDetails(req.params.id)
   
-  res.render('admin/edit-product',{product})
+  res.render('admin/edit-product',{admin:true,product})
 })
 router.post('/edit-product/:id',(req,res)=>{
     productHelpers.updateProduct(req.params.id,req.body).then(()=>{
