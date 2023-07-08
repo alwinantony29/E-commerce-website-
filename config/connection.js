@@ -1,9 +1,9 @@
 const mongoClient=require('mongodb').MongoClient
 const state={
     db:null
-}
+} 
 module.exports.connect=(done)=>{
-    const url='mongodb://0.0.0.0:27017'
+    const url=process.env.MONGODB_URI 
     const dbname='shopping'
 
     mongoClient.connect(url,{useNewUrlParser:true,useUnifiedTopology: true },(err,data)=>{

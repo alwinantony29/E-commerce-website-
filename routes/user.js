@@ -32,8 +32,8 @@ router.get('/login', (req, res, next) => {
     res.redirect('/')
   } else
     res.render('./user/login',
-     { "loginErr": req.session?.userloginErr }
-     );
+      { "loginErr": req.session?.userloginErr }
+    );
   // req.session.user.loginErr = false
 })
 router.post('/login', (req, res) => {
@@ -78,7 +78,7 @@ router.get('/cart', verifyLogin, async (req, res) => {
   res.render('user/cart', { user, products, totalValue })
 
 })
-router.get('/add-to-cart/:id', (req, res) => {
+router.get('/add-to-cart/:id', verifyLogin, (req, res) => {
 
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
     res.json({ status: true })
@@ -105,24 +105,23 @@ router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.body.userId)
   let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
   userHelpers.placeOrder(req.body, products, totalPrice).then((response) => {
-    console.log();
 
     if (req.body['payment-method'] == 'COD') {
       res.json({ status: true })
     } else {
       userHelpers.generateRazorPay()
     }
-
-
   })
   console.log(req.body);
 })
 router.get('/order-success', (req, res) => {
   res.render('user/order-success', { user: req.session.user })
 })
-router.get('/orders',verifyLogin, async (req, res) => {
+router.get('/orders', verifyLogin, async (req, res) => {
   let orders = await userHelpers.getUserOrders(req.session.user._id)
-  orders[0].date=orders[0].date.toLocaleDateString()
+  if (orders.length > 0) {
+    orders[0].date = orders[0].date.toLocaleDateString()
+  }
   res.render('user/orders', { user: req.session.user, orders })
 })
 router.get('/view-order-products/:id', async (req, res) => {

@@ -147,9 +147,10 @@ module.exports = {
     getCartCount: (userId) => {
         return new Promise(async (resolve, reject) => {
             let count = 0
-            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId })
+            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
             if (cart) {
                 cart.products.forEach(element => {
+                    console.log(element.quantity);
                     count += element.quantity
 
                 });
@@ -229,11 +230,11 @@ module.exports = {
                 }, {
                     $group: {
                         _id: null,
-                        total: { $sum: { $multiply: ['$quantity', '$product.Price'] } }
+                        total: { $sum: { $multiply: ["$quantity",{$toDouble: '$product.Price'}] } }
                     }
                 }
 
-            ]).toArray()
+            ]).toArray() 
             if (total[0]) {
                 console.log("total:" + total[0].total);
                 resolve(total[0].total)

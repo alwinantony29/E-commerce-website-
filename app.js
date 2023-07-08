@@ -1,9 +1,9 @@
+require('dotenv').config()
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 const { hasSubscribers } = require('diagnostics_channel');
@@ -12,13 +12,14 @@ var app = express();
 const { allowinsecurePrototypeAcess}=require('@handlebars/allow-prototype-access');
 var fileUpload=require('express-fileupload')
 var db=require('./config/connection')
-var session=require('express-session')
+var session=require('express-session');
+const { log } = require('console');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/'}));
 app.use(logger('dev'));
-app.use(express.json());
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

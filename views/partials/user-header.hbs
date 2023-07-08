@@ -1,54 +1,52 @@
 <header>
 
-      <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo03"
-            aria-controls="navbarTogglerDemo03"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+        aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/">Srees Cake Art</a>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Products</a>
+          </li>
+          {{#if user}}
+          <li class="nav-item">
+            <a class="nav-link " href="/cart">Cart
+          {{#if cartCount}}
+              <span class=" top-1 start-100 translate-middle rounded-pill  badge bg-primary" id="cart-count">
+                {{cartCount}}
+              </span>
+          {{/if}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/orders">My Orders</a>
+          </li>
+          {{/if}}
+        </ul>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{#if user}}
+            {{user.Name}}
+            {{else}}
+            Guest
+            {{/if}}
           </button>
-          <a class="navbar-brand" href="/">Srees Cake Art</a>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Products</a>
-              </li>
-              {{#if user}}
-              {{#if cartCount}}
-              <li class="nav-item">
-                <a class="nav-link " href="/cart">Cart<span class=" top-1 start-100 translate-middle rounded-pill  badge bg-primary" id="cart-count"> {{cartCount}}</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="/orders">My Orders</a>
-              </li>
-             {{/if}}
-             {{/if}}
-            </ul>
-            <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{#if user}}
-          {{user.Name}}
-          {{else}}
-          Guest
-      {{/if}}
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {{#if user}}
-    <a class="dropdown-item" href="/logout">Logout</a>
-    {{else}}
-    <a class="dropdown-item" href="/login">login</a>
-    {{/if}}
-    <a class="dropdown-item" href="/">Something else here</a>
-  </div>
-</div>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {{#if user}}
+            <a class="dropdown-item" href="/logout">Logout</a>
+            {{else}}
+            <a class="dropdown-item" href="/login">login</a>
+            {{/if}}
+            <a class="dropdown-item" href="/">Something else here</a>
           </div>
         </div>
-      </nav>
+      </div>
+    </div>
+  </nav>
 
-    </header>
+</header>
