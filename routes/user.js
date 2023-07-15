@@ -97,19 +97,22 @@ router.post('/remove-product', (req, res, next) => {
     res.json(response)
   })
 })
+
 router.get('/place-order', verifyLogin, async (req, res) => {
   let total = await userHelpers.getTotalAmount(req.session.user._id)
   res.render('user/place-order', { total, user: req.session.user })
 })
+
 router.post('/place-order', async (req, res) => {
+  console.log(req.body);
   let products = await userHelpers.getCartProductList(req.body.userId)
-  let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
+  const totalPrice = await userHelpers.getTotalAmount(req.body.userId)
   userHelpers.placeOrder(req.body, products, totalPrice).then((response) => {
 
-    if (req.body['payment-method'] == 'COD') {
+    if (req.body['payment-method'] == 'COD') { 
       res.json({ status: true })
     } else {
-      userHelpers.generateRazorPay()
+      userHelpers.generateRazorPay(totalPrice)
     }
   })
   console.log(req.body);

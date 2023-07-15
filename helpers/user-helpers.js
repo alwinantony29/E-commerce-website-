@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const { response } = require('express')
 const { log } = require('debug/src/browser')
 var objectId = require('mongodb').ObjectId
+const Razorpay = require('razorpay');
 
 module.exports = {
 
@@ -230,15 +231,15 @@ module.exports = {
                 }, {
                     $group: {
                         _id: null,
-                        total: { $sum: { $multiply: ["$quantity",{$toDouble: '$product.Price'}] } }
+                        total: { $sum: { $multiply: ["$quantity", { $toDouble: '$product.Price' }] } }
                     }
                 }
 
-            ]).toArray() 
+            ]).toArray()
             if (total[0]) {
                 console.log("total:" + total[0].total);
                 resolve(total[0].total)
-            }else resolve(0)
+            } else resolve(0)
         })
 
     },
@@ -313,7 +314,20 @@ module.exports = {
             console.log(orderItems);
             resolve(orderItems);
         })
-    }
+    },
+    generateRazorPay: (amount=50000, receipt) => {
+        const instance = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_SECRET })
+        const options = {
+            amount,  // amount in the smallest currency unit
+            currency: "INR",
+            receipt: "order_rcptid_11"
+        }
+        instance.orders.create(options, function (err, order) {
+            console.log(order);
+        });
+
+
+    },
 
 
 }
