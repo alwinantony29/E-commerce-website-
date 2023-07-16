@@ -46,23 +46,23 @@
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
-                console.log("placeOrder response",response)
+                console.log("placeOrder response", response)
                 if (response.COD) {
                     location.href = '/order-success'
                 }
                 if (response.instanceOrderId) {
-                    razorpayPopUp(response.instanceOrderId, response.totalPrice,response.orderId)
+                    razorpayPopUp(response.instanceOrderId, response.totalPrice, response.orderId)
                 }
             }
         })
     })
-    function razorpayPopUp(rzpInstanceOrderId, totalPrice,orderId) {
+    function razorpayPopUp(rzpInstanceOrderId, totalPrice, mongodbOrderId) {
         var options = {
             "key": "rzp_test_kbouakeYJ8qa0u", // Enter the Key ID generated from RazorPay Dashboard
             "amount": (totalPrice) * 100, // amount in paise format
             "currency": "INR",
             "name": "Srees Cake Art",//Company Name or Product Name
-            "description": `Payment of order id : ${{ orderId }}`,
+            "description": `Payment of order id : ${{ mongodbOrderId }}`,
             "image": "https://res.cloudinary.com/ddh0reqyx/image/upload/v1689514816/srees_cake_art_logo_nx2euj.jpg",
             "order_id": rzpInstanceOrderId, // Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
@@ -70,14 +70,15 @@
                 console.log(response.razorpay_payment_id);
                 console.log(response.razorpay_order_id);
                 console.log(response.razorpay_signature)
-                response.rzpInstanceOrderId=rzpInstanceOrderId
+                response.rzpInstanceOrderId = rzpInstanceOrderId
+                response.mongodbOrderId = mongodbOrderId
                 $.ajax({
-                    url:"/payment",
-                    data:response,
-                    method:'POST',
-                    success:function(res){
+                    url: "/payment",
+                    data: response,
+                    method: 'POST',
+                    success: function (res) {
                         alert(res.message)
-                        window.location.href="/order-success";
+                        window.location.href = "/order-success";
                     }
 
                 })

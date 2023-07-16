@@ -8,6 +8,8 @@ const Razorpay = require('razorpay');
 const { RazorpayCheckout } = require('razorpay');
 const sha256 = require('js-sha256');
 const crypto = require('crypto');
+const async = require('hbs/lib/async')
+const { ObjectId } = require('mongodb')
 
 module.exports = {
 
@@ -345,20 +347,30 @@ module.exports = {
             console.log("pid", razorpay_payment_id)
             console.log("sig", razorpay_signature);
             const data = rzpInstanceOrderId + "|" + razorpay_payment_id
-            const generated_signature = sha256.hmac(secret, data) 
+            const generated_signature = sha256.hmac(secret, data)
             // const generated_signature = crypto
             //     .createHmac('sha256', secret)
             //     .update(data)
             //     .digest('hex');
-
             console.log("generated signature:", generated_signature)
             if (generated_signature == razorpay_signature) {
-                console.log("payment is successful")
+                console.log("signature matched , payment is successful")
                 resolve()
             } else {
                 console.log("signature mismatch try again")
             }
         })
+    },
+    updatePaymentStatus: async (id, paymentId) => {
+        console.log("update params",id,paymentId);
+        try {
+            const result = await db.get().collection(collection.ORDER_COLLECTION)
+                .updateOne({ _id: ObjectId(id) }, { $set: { status: "placed", paymentId: paymentId } },{ returnOriginal: false })
+            console.log("updation result: ", result);
+
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 

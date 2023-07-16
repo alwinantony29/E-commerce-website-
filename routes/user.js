@@ -107,13 +107,13 @@ router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.body.userId)
   const totalPrice = await userHelpers.getTotalAmount(req.body.userId)
   userHelpers.placeOrder(req.body, products, totalPrice).then((response) => {
-    console.log("response from placeorder",response.insertedId);
+    console.log("response from placeorder", response.insertedId);
     if (req.body.paymentMethod == 'COD') {
       res.json({ COD: true })
     } else {
       userHelpers.generateRazorPay(response.insertedId, totalPrice).then((instanceOrderId) => {
         console.log("instanceOrderId from rzp: ", instanceOrderId)
-        const orderId=response.insertedId
+        const orderId = response.insertedId
         res.status(200).json({ instanceOrderId, totalPrice, orderId })
       })
     }
@@ -123,10 +123,10 @@ router.post('/place-order', async (req, res) => {
 router.post('/payment', (req, res) => {
 
   console.log('payment req', req.body)
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature,rzpInstanceOrderId } = req.body
-  userHelpers.verifyPaymentSignature(razorpay_payment_id, razorpay_signature, rzpInstanceOrderId).then(()=>{
-    // res.redirect('order-success')
-    res.status(200).json({message:"payment verified succesfully"})
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, rzpInstanceOrderId, mongodbOrderId } = req.body
+  userHelpers.verifyPaymentSignature(razorpay_payment_id, razorpay_signature, rzpInstanceOrderId).then(() => {
+    userHelpers.updatePaymentStatus(mongodbOrderId,razorpay_payment_id)
+    res.status(200).json({ message: "payment verified succesfully" })
   })
 })
 
