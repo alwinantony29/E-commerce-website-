@@ -6,7 +6,8 @@
                     <h2>Enter delivery details</h2>
                     <div>
                         <label for="">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" placeholder="123 street">
+                        <input autofocus type="text" class="form-control" id="address" name="address"
+                            placeholder="123 street">
                         <label for="">Pincode</label>
                         <input type="text" class="form-control" id="pincode" name="pincode">
                         <label for="">Mobile</label>
@@ -20,13 +21,17 @@
                         <hr>
                         <div class="payment">
                             <p>payment method</p>
-                            <label for="" class="radio-inline" >
-                                <input type="radio" name="payment-method" value="COD" checked="COD">COD
-                            </label><br>
-                            <label for="" type="radio" name="payment-method" value="ONLINE">
-                                <input type="radio" name="payment-method" value="ONLINE" checked">Online Payment</label>                           
+                            <label for="" class="radio-inline">
+                                <input type="radio" name="paymentMethod" value="COD" checked="COD">
+                                COD
+                            </label>
+                            <br>
+                            <label for="" type="radio">
+                                <input type="radio" name="paymentMethod" value="ONLINE" checked>
+                                Online Payment
+                            </label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2" >Confirm Order</button>
+                        <button type="submit" class="btn btn-primary mt-2">Confirm Order</button>
                     </div>
                 </div>
             </div>
@@ -34,18 +39,72 @@
     </div>
 </section>
 <script>
-   $("#checkout-form").submit((e)=>{
-    e.preventDefault()
-    $.ajax({
-        url:'/place-order',
-        method:'post',
-        data:$('#checkout-form').serialize(),
-        success:(response)=>{
-            alert(response)
-            if(response.status){
-                location.href='/order-success'
+    $("#checkout-form").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                console.log("placeOrder response",response)
+                if (response.COD) {
+                    location.href = '/order-success'
+                }
+                if (response.instanceOrderId) {
+                    razorpayPopUp(response.instanceOrderId, response.totalPrice,response.orderId)
+                }
+            }
+        })
+    })
+    function razorpayPopUp(rzpInstanceOrderId, totalPrice,orderId) {
+        var options = {
+            "key": "rzp_test_kbouakeYJ8qa0u", // Enter the Key ID generated from RazorPay Dashboard
+            "amount": (totalPrice) * 100, // amount in paise format
+            "currency": "INR",
+            "name": "Srees Cake Art",//Company Name or Product Name
+            "description": `Payment of order id : ${{ orderId }}`,
+            "image": "https://res.cloudinary.com/ddh0reqyx/image/upload/v1689514816/srees_cake_art_logo_nx2euj.jpg",
+            "order_id": rzpInstanceOrderId, // Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                console.log("res from rzp")
+                console.log(response.razorpay_payment_id);
+                console.log(response.razorpay_order_id);
+                console.log(response.razorpay_signature)
+                response.rzpInstanceOrderId=rzpInstanceOrderId
+                $.ajax({
+                    url:"/payment",
+                    data:response,
+                    method:'POST',
+                    success:function(res){
+                        alert(res.message)
+                        window.location.href="/order-success";
+                    }
+
+                })
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Srees Villa"
+            },
+            "theme": {
+                "color": "#3399cc"
             }
         }
-    })
-   }) 
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        })
+        rzp1.open()
+    }
+
 </script>

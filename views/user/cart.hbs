@@ -15,7 +15,7 @@
                 {{#each products}}
                 <tr>
                     
-                    <td><img src="/product-images/{{this.product._id}}.jpg" alt="image"></td>
+                    <td><img src="/product-images/{{this.product._id}}.jpg" alt="image" style="height: 100px;width:200px"></td>
                     <td>{{this.product.Name}}</td>
                     <td>Rs.{{this.product.Price}}</td>
                   
@@ -24,8 +24,7 @@
                     <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)" >+</button>
                     </td>
                     <td>
-                        <button class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
-                        
+                        <button class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>         
                     </td>
                 </tr>
                 {{/each}}
@@ -34,7 +33,7 @@
         </table>
         <hr>
         <h3 class="float-right mr-4 mt-3">Total : Rs. <span id="total">{{totalValue}}</span></h3>
-        <a href="/place-order" class="float-right btn btn-success  ">Place Order</a>
+        <a  href="/place-order" class="float-right btn btn-success  ">Place Order</a>
     </div>
 </section>
 

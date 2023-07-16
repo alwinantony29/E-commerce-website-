@@ -5,6 +5,9 @@ const { response } = require('express')
 const { log } = require('debug/src/browser')
 var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
+const { RazorpayCheckout } = require('razorpay');
+const sha256 = require('js-sha256');
+const crypto = require('crypto');
 
 module.exports = {
 
@@ -27,28 +30,28 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let loginStatus = false
             let response = {}
-            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
+            try {
+                let user = await db.get().collection(collection.USER_COLLECTION).findOne({ Email: userData.Email })
+                if (user) {
+                    console.log(user);
+                    bcrypt.compare(userData.Password, user.Password).then((status) => {
 
-            if (user) {
-                console.log(user);
-                bcrypt.compare(userData.Password, user.Password).then((status) => {
+                        if (status) {
+                            console.log("login succesful");
+                            response.user = user
+                            response.status = true
+                            resolve(response)
+                        } else {
+                            console.log("login failed");
+                            resolve({ status: false })
+                        }
+                    })
+                } else {
+                    console.log("login failed");
+                    resolve({ status: false })
 
-                    if (status) {
-                        console.log("login succesful");
-                        response.user = user
-                        response.status = true
-                        resolve(response)
-                    } else {
-                        console.log("login failed");
-                        resolve({ status: false })
-                    }
-                })
-            } else {
-                console.log("login failed");
-                resolve({ status: false })
-
-            }
-
+                }
+            } catch (err) { console.log(err); }
         })
     },
     addToCart: (proId, userId) => {
@@ -237,7 +240,7 @@ module.exports = {
 
             ]).toArray()
             if (total[0]) {
-                console.log("total:" + total[0].total);
+                console.log("total:", total[0].total);
                 resolve(total[0].total)
             } else resolve(0)
         })
@@ -245,8 +248,8 @@ module.exports = {
     },
     placeOrder: (order, products, total) => {
         return new Promise((resolve, reject) => {
-            console.log(order, products, total);
-            let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
+            // console.log(order, products, total);
+            let status = order.paymentMethod === 'COD' ? 'placed' : 'pending'
             let orderObj = {
                 deliveryDetails: {
                     mobile: order.mobile,
@@ -254,7 +257,7 @@ module.exports = {
                     pincode: order.pincode
                 },
                 userId: objectId(order.userId),
-                paymentMethod: order['payment-method'],
+                paymentMethod: order.paymentMethod,
                 products: products,
                 totalAmount: total,
                 status: status,
@@ -263,16 +266,18 @@ module.exports = {
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(order.userId) })
                 resolve(response)
-
-
             })
         })
 
     },
     getCartProductList: (userId) => {
         return new Promise(async (resolve, reject) => {
-            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
-            resolve(cart.products)
+            try {
+                let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
+                resolve(cart.products)
+            } catch (err) {
+                console.log(err);
+            }
         })
     },
     getUserOrders: (userId) => {
@@ -311,23 +316,50 @@ module.exports = {
                 }
 
             ]).toArray()
-            console.log(orderItems);
+            // console.log(orderItems);
             resolve(orderItems);
         })
     },
-    generateRazorPay: (amount=50000, receipt) => {
-        const instance = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_SECRET })
-        const options = {
-            amount,  // amount in the smallest currency unit
-            currency: "INR",
-            receipt: "order_rcptid_11"
-        }
-        instance.orders.create(options, function (err, order) {
-            console.log(order);
-        });
-
-
+    generateRazorPay: (mongoOrderId, amount) => {
+        return new Promise(async (resolve, reject) => {
+            console.log("params in grp", mongoOrderId, amount);
+            const instance = new Razorpay({
+                key_id: process.env.RAZORPAY_KEY_ID,
+                key_secret: process.env.RAZORPAY_SECRET,
+            });
+            const options = {
+                amount: amount * 100,  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: "" + mongoOrderId
+            }
+            instance.orders.create(options, function (err, order) {
+                if (err) console.log(err);
+                console.log("razorpay order details:", order);
+                resolve(order.id)
+            });
+        })
     },
+    verifyPaymentSignature: (razorpay_payment_id, razorpay_signature, rzpInstanceOrderId) => {
+        return new Promise(async (resolve, reject) => {
+            const secret = process.env.RAZORPAY_SECRET
+            console.log("pid", razorpay_payment_id)
+            console.log("sig", razorpay_signature);
+            const data = rzpInstanceOrderId + "|" + razorpay_payment_id
+            const generated_signature = sha256.hmac(secret, data) 
+            // const generated_signature = crypto
+            //     .createHmac('sha256', secret)
+            //     .update(data)
+            //     .digest('hex');
+
+            console.log("generated signature:", generated_signature)
+            if (generated_signature == razorpay_signature) {
+                console.log("payment is successful")
+                resolve()
+            } else {
+                console.log("signature mismatch try again")
+            }
+        })
+    }
 
 
 }

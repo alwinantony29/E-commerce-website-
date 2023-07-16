@@ -30,6 +30,7 @@ db.connect((err)=>{
   else console.log("Database connected to 27017");
 })
 
+
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 
