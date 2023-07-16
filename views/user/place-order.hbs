@@ -46,17 +46,19 @@
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
+                const { instanceOrderId, totalPrice, orderId, user } = response
                 console.log("placeOrder response", response)
                 if (response.COD) {
                     location.href = '/order-success'
                 }
                 if (response.instanceOrderId) {
-                    razorpayPopUp(response.instanceOrderId, response.totalPrice, response.orderId)
+                    razorpayPopUp(instanceOrderId, totalPrice, orderId, user)
                 }
             }
         })
     })
-    function razorpayPopUp(rzpInstanceOrderId, totalPrice, mongodbOrderId) {
+    function razorpayPopUp(rzpInstanceOrderId, totalPrice, mongodbOrderId, user) {
+        const { Name, Email,PhoneNumber } = user
         var options = {
             "key": "rzp_test_kbouakeYJ8qa0u", // Enter the Key ID generated from RazorPay Dashboard
             "amount": (totalPrice) * 100, // amount in paise format
@@ -84,12 +86,12 @@
                 })
             },
             "prefill": {
-                "name": "Gaurav Kumar",
-                "email": "gaurav.kumar@example.com",
-                "contact": "9000090000"
+                "name": Name,
+                "email": Email,
+                "contact": PhoneNumber
             },
             "notes": {
-                "address": "Srees Villa"
+                "address": "No address provided"
             },
             "theme": {
                 "color": "#3399cc"

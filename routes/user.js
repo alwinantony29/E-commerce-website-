@@ -14,6 +14,7 @@ const verifyLogin = (req, res, next) => {
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   let user = req.session.user
+  console.log(user);
   let cartCount = 0
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -49,7 +50,7 @@ router.post('/login', (req, res) => {
   })
 })
 
-// sign up
+/////////////////// user  sign up
 
 router.get('/signup', (req, res, next) => {
   res.render('./user/signup', { admin: false });
@@ -58,9 +59,9 @@ router.get('/signup', (req, res, next) => {
 router.post('/signup', (req, res) => {
 
   userHelpers.doSignup(req.body).then((response) => {
-
+    console.log(response);
     req.session.user = response
-    req.session.user.loggedIn = true
+    req.session.user.loggedIn = true 
     res.redirect('/')
   })
 })
@@ -114,7 +115,8 @@ router.post('/place-order', async (req, res) => {
       userHelpers.generateRazorPay(response.insertedId, totalPrice).then((instanceOrderId) => {
         console.log("instanceOrderId from rzp: ", instanceOrderId)
         const orderId = response.insertedId
-        res.status(200).json({ instanceOrderId, totalPrice, orderId })
+        const user = req.session.user
+        res.status(200).json({ instanceOrderId, totalPrice, orderId, user })
       })
     }
   })
@@ -125,16 +127,19 @@ router.post('/payment', (req, res) => {
   console.log('payment req', req.body)
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature, rzpInstanceOrderId, mongodbOrderId } = req.body
   userHelpers.verifyPaymentSignature(razorpay_payment_id, razorpay_signature, rzpInstanceOrderId).then(() => {
-    userHelpers.updatePaymentStatus(mongodbOrderId,razorpay_payment_id)
+    userHelpers.updatePaymentStatus(mongodbOrderId, razorpay_payment_id)
     res.status(200).json({ message: "payment verified succesfully" })
   })
 })
 
 router.get('/order-success', (req, res) => {
+
   res.render('user/order-success', { user: req.session.user })
+
 })
 
 router.get('/orders', verifyLogin, async (req, res) => {
+
   let orders = await userHelpers.getUserOrders(req.session.user._id)
   if (orders.length > 0) {
     orders[0].date = orders[0].date.toLocaleDateString()
@@ -143,6 +148,7 @@ router.get('/orders', verifyLogin, async (req, res) => {
 })
 
 router.get('/view-order-products/:id', async (req, res) => {
+
   let products = await userHelpers.getOrderProducts(req.params.id)
   res.render('user/view-order-products', { user: req.session.user, products })
 })
