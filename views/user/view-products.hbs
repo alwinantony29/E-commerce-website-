@@ -1,25 +1,88 @@
-    <section>
-      <div class="container pt-5">
-        <div class="row justify-content-center gap-2">
-          {{#each products}}
+{{!-- carousal section --}}
+<section class="mt-3">
+  <div id="carouselExampleIndicators" class="carousel slide shadow  " data-bs-ride="true">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+        aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+        aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+        aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner pt-4 mt-5  bg-warning" style="font-family: 'Dancing Script', cursive;">
 
-            <div class="card col-md-3 p-0 col-6 col-sm-4 justify-content-between m-3" style="width: 14rem; height: 26rem;">
-              <img
-                src="/product-images/{{this._id}}.jpg"
-                class="card-img-top"
-                style="padding:0;max-height:13rem"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">{{this.Name}}</h5>
-                <p>{{this.Price}}</p>
-                <p class="card-text">{{this.Description}}</p>  
-                <button autofocus onclick="addToCart('{{this._id}}')" class="btn btn-primary">Add to cart</button>
-              </div>
-            </div>
-           {{/each}}        
-           </div>
+      <div class="carousel-item active">
+        <div class="d-flex w-100 mb-5 ">
+          <div class="d-flex w-100 text-center p-4 align-items-center justify-content-center text-white " style="">
+            <h1>
+              Every cake tells a story; let us create a masterpiece for you .
+            </h1>
+          </div>
+          {{!-- <div class="w-50">
+            <img src="https://res.cloudinary.com/ddh0reqyx/image/upload/v1689581231/srees_bg_removed_ysp8sq.png"
+              style="object-fit: contain; height: 30vh;" class="w-100" alt="carousal image">
+          </div> --}}
+        </div>
       </div>
-    </section> 
 
-    
+      <div class="carousel-item">
+        <div class="d-flex w-100 mb-5 ">
+          <div class="d-flex w-100 text-center p-4 align-items-center justify-content-center text-white "
+            style="width: 100%;">
+            <h1>
+              Experience the magic of homemade baking, crafted just for you .
+            </h1>
+          </div>
+          {{!-- <div class="w-50">
+            <img src="https://res.cloudinary.com/ddh0reqyx/image/upload/v1689514816/srees_cake_art_logo_nx2euj.jpg"
+              style="height: 30vh;" class="w-100" alt="carousal image">
+          </div> --}}
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="d-flex w-100 mb-5 ">
+          <div class="d-flex w-100 text-center p-4 align-items-center justify-content-center text-white "
+            style="width: 100%;">
+            <h1>
+              Baking dreams into reality, one cake at a time . </h1>
+          </div>
+          {{!-- <div class="w-50">
+            <img src="https://res.cloudinary.com/ddh0reqyx/image/upload/v1689514816/srees_cake_art_logo_nx2euj.jpg"
+              style="height: 30vh;" class="w-100" alt="carousal image">
+          </div> --}}
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>  
+  </div>
+</section>
+{{!-- cake section --}}
+<section>
+  <div class="container mb-5 pt-5">
+    <div class="row justify-content-center gap-5">
+
+      {{#each products}}
+      <div class="card col-md-3 shadow col-4 col-sm-6  text-center" style="background-color: white; width: 14rem; ;">
+        <img src="/product-images/{{this._id}}.jpg" class="card-img-top rounded"
+          style="mix-blend-mode: darken;height:13rem;object-fit: fill;" alt="product-image" />
+        <div class="card-body">
+          <h4 class="card-title">{{this.Name}}</h4>
+          <p>Price: {{this.Price}}</p>
+          {{!-- <p class="card-text">Description: {{this.Description}}</p> --}}
+          <button onclick="addToCart('{{this._id}}')" class="btn btn-warning">Add to cart</button>
+        </div>
+      </div>
+      {{/each}}
+
+    </div>
+  </div>
+</section>

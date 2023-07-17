@@ -1,28 +1,20 @@
-    <section>
-      <div class="container pt-5">
-        <div class="row">
-          {{#each products}}
+<section>
+  <div class="container my-5 py-5">
+    <div class="row justify-content-center gap-5 mb-4">
 
-          <div class="col-md-3 p-3">
-           
-            <div class="card" style="width: 15rem; height: 16rem;">
-              <img
-                src="/product-images/{{this.product._id}}.jpg"
-                class="card-img-top"
-                style="height: 10rem;"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">{{this.product.Name}}</h5>
-                <p>{{this.Price}}</p>
-                <p class="card-text">Quantity:{{this.quantity}}</p>  
-                
-              </div>
-            </div>
-           </div>  
-           {{/each}}        
-           </div>
+      {{#each products}}
+      <div class="card col-md-3 shadow col-4 col-sm-6  text-center" style="background-color: white; width: 14rem; ;">
+        <img src="/product-images/{{this.product._id}}.jpg" class="card-img-top rounded"
+          style="mix-blend-mode: darken;height:13rem;object-fit: fill;" alt="product-image" />
+        <div class="card-body">
+          <h4 class="card-title">{{this.product.Name}}</h4>
+          <p>Price: {{this.product.Price}}</p>
+          <p class="card-text">Quantity:{{this.quantity}}</p>
+
+        </div>
       </div>
-    </section> 
+      {{/each}}
 
-    
+    </div>
+  </div>
+</section>

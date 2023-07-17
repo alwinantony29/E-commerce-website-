@@ -13,9 +13,9 @@ router.get('/login',(req,res,next)=>{
 })
 
 router.get('/', function(req, res, next) {
-productHelper.getAllProducts().then((products)=>{
+productHelper.getAllProducts().then((products)=>{ 
   
-  res.render('admin/view-products',{admin:true,products})
+  res.render('admin/view-products',{admin:true,products}) 
 
 })
 });
@@ -30,7 +30,7 @@ router.post('/add-product',(req,res)=>{
     let image=req.files.Image
     image.mv('public/product-images/'+_id+'.jpg',(err,done)=>{
       if(!err){
-        res.render("admin/",{admin:true}) 
+        res.redirect("/admin") 
       }
       else{
         console.log(err);
