@@ -15,7 +15,7 @@ const verifyLogin = (req, res, next) => {
 router.get('/', async function (req, res, next) {
   let user = req.session.user
   console.log(user);
-  let cartCount = 0
+  let cartCount
   if (user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -61,7 +61,7 @@ router.post('/signup', (req, res) => {
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response);
     req.session.user = response
-    req.session.user.loggedIn = true 
+    req.session.user.loggedIn = true
     res.redirect('/')
   })
 })
@@ -141,8 +141,16 @@ router.get('/order-success', (req, res) => {
 router.get('/orders', verifyLogin, async (req, res) => {
 
   let orders = await userHelpers.getUserOrders(req.session.user._id)
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   if (orders.length > 0) {
-    orders[0].date = orders[0].date.toLocaleDateString()
+    orders.forEach(element => {
+      element.date = element.date.toLocaleDateString("en-US", options)
+    });
   }
   res.render('user/orders', { user: req.session.user, orders })
 })

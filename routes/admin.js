@@ -19,7 +19,7 @@ productHelper.getAllProducts().then((products)=>{
 
 })
 });
-router.get('/add-product',function(req,res){
+router.get('/add-product',function(req,res){ 
   res.render('admin/add-product',{admin:true})
 })
 router.post('/add-product',(req,res)=>{

@@ -1,4 +1,4 @@
-<header class="fixed-top">
+<header class="fixed-top " style="font-family: 'Roboto', sans-serif;">
 
   <nav class="navbar navbar-expand-lg bg-warning">
     <div class="container-fluid">
@@ -7,21 +7,23 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="d-flex gap-1">
-        <a class="navbar-brand fw-bold " style="font-family: 'Roboto', sans-serif;" href="/">Srees Cake Art</a>
+        <a class="navbar-brand fw-bold " href="/">Srees Cake Art</a>
         <img style="height: 40px;width:40px;border-radius:20px" class="p-auto"
           src="https://res.cloudinary.com/ddh0reqyx/image/upload/v1689514816/srees_cake_art_logo_nx2euj.jpg" alt="">
       </div>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
+          <li class="nav-item d-flex ">
             <a class="nav-link fs-5 active" aria-current="Cakes page" href="/">Cakes</a>
           </li>
           {{#if user}}
           <li class="nav-item">
-            <a class="nav-link active fs-5" href="/cart">Cart
+            <a class="nav-link active fs-5" href="/cart">My Cart
+              <i class="fa-solid fa-cart-shopping"></i>
               {{#if cartCount}}
-              <span class=" top-1 start-100 translate-middle rounded-pill  badge bg-primary" id="cart-count">
+              <span class="top-1 translate-middle start-100 mb-2 rounded-pill  badge  text-white" id="cart-count">
                 {{cartCount}}
+
               </span>
               {{/if}}
             </a>
@@ -35,18 +37,17 @@
           <button class="btn dropdown-toggle fw-bold" style="background-color:; color: white;;" type="button"
             id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{#if user}}
-            {{user.Name}}
+            Welcome back, {{user.Name}}
             {{else}}
             Guest
             {{/if}}
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div class="dropdown-menu bg-warning " style="border-color: white;" aria-labelledby="dropdownMenuButton">
             {{#if user}}
-            <a class="dropdown-item" href="/logout">Logout</a>
+            <a class="dropdown-item text-white" href="/logout">Logout</a>
             {{else}}
-            <a class="dropdown-item" href="/login">login</a>
+            <a class="dropdown-item text-white" href="/login">login</a>
             {{/if}}
-            <a class="dropdown-item" href="/">Something else here</a>
           </div>
         </div>
       </div>
