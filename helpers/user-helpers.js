@@ -1,5 +1,5 @@
 var db = require('../config/connection')
-var collection = require('../config/collections')
+const collection = require('../config/collections')
 const bcrypt = require('bcrypt')
 const { response } = require('express')
 const { log } = require('debug/src/browser')
@@ -10,6 +10,18 @@ const crypto = require('crypto');
 const { ObjectId } = require('mongodb')
 
 module.exports = {
+    getUserList: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const users = await db.get().collection(collection.USER_COLLECTION).find().toArray();
+                console.log(users);
+                resolve(users);
+            } catch (error) {
+                reject(error);
+            }
+        })
+
+    },
 
     doSignup: (userData) => {
 
@@ -368,7 +380,7 @@ module.exports = {
         })
     },
     verifyPaymentSignature: (razorpay_payment_id, razorpay_signature, rzpInstanceOrderId) => {
-      
+
         return new Promise(async (resolve, reject) => {
 
             const secret = process.env.RAZORPAY_SECRET
@@ -389,7 +401,7 @@ module.exports = {
     updatePaymentStatus: async (id, paymentId) => {
 
         console.log("update params", id, paymentId);
-        
+
         try {
             const result = await db.get().collection(collection.ORDER_COLLECTION)
                 .updateOne({ _id: ObjectId(id) }, { $set: { status: "placed", paymentId: paymentId } }, { returnOriginal: false })

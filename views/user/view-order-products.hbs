@@ -1,9 +1,9 @@
-<section>
-  <div class="container my-5 py-5">
-    <div class="row justify-content-center gap-5 mb-4">
+<section class=" d-flex py-5 sm:h-auto h-100 align-items-center">
+  <div class="container ">
+    <div class="row justify-content-center gap-5 ">
 
       {{#each products}}
-      <div class="card col-md-3 shadow col-4 col-sm-6  text-center" style="background-color: white; width: 14rem; ;">
+      <div class="card col-md-3 shadow col-4 col-sm-6 shadow-lg text-center" style="background-color: white; width: 14rem; ;">
         <img src="/product-images/{{this.product._id}}.jpg" class="card-img-top rounded"
           style="mix-blend-mode: darken;height:13rem;object-fit: fill;" alt="product-image" />
         <div class="card-body">

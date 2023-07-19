@@ -1,31 +1,33 @@
-<div class="row my-5 justify-content-center">
+<div class="row bg-warning py-5 justify-content-center">
   <div class="col-10 col-sm-8 col-md-8 m-auto">
     <div class="container  mt-5 ">
-      <h1 class="text-center">Signup</h1>
+      <h1 class="text-center text-white">Signup</h1>
       <form action="/signup" method="post">
 
-        <div class="form-group">
-          <label class="p-2 fw-bold" for="exampleInputPassword1">Name</label>
+        <div class="form-group ">
+          <label class="p-2 fw-bold text-white" for="exampleInputPassword1">Name</label>
           <input name="Name" type="text" class="form-control" id="exampleInputName1" placeholder="Name">
         </div>
-         <div class="form-group">
-          <label class="p-2 fw-bold" for="PhoneNumber">Contact Number</label>
-          <input name="PhoneNumber" type="number" inputmode="numeric" class="form-control" id="PhoneNumber" placeholder="Number">
+        <div class="form-group">
+          <label class="p-2 fw-bold text-white" for="PhoneNumber">Contact Number</label>
+          <input name="PhoneNumber" type="number" inputmode="numeric" class="form-control" id="PhoneNumber"
+            placeholder="Number">
         </div>
 
         <div class="form-group ">
-          <label class="p-2 fw-bold" for="exampleInputEmail1">Email address</label>
+          <label class="p-2 fw-bold text-white" for="exampleInputEmail1">Email address</label>
           <input name="Email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             placeholder="Email">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
-          <label class="p-2 fw-bold" for="exampleInputPassword1">Password</label>
-          <input name="Password" type="password" class="mb-2 form-control" id="exampleInputPassword1" placeholder="Password">
+          <label class="p-2 fw-bold text-white" for="exampleInputPassword1">Password</label>
+          <input name="Password" type="password" class="mb-2 form-control" id="exampleInputPassword1"
+            placeholder="Password">
         </div>
 
-        <a class="" href="/login">Already have an account?</a><br>
-        <button type="submit" class="mt-3  btn btn-primary ">Sign Up</button>
+        <a class="text-white fw-bold" href="/login">Already have an account?</a><br>
+        <button type="submit" class="mt-3  btn btn-light text-warning ">Sign Up</button>
       </form>
     </div>
   </div>

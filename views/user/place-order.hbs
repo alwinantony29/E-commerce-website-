@@ -6,12 +6,12 @@
                     <h2>Enter delivery details</h2>
                     <div>
                         <label for="">Address</label>
-                        <input autofocus type="text" class="form-control" id="address" name="address"
+                        <input autofocus required type="text" class="form-control" id="address" name="address"
                             placeholder="123 street">
                         <label for="">Pincode</label>
-                        <input type="text" class="form-control" id="pincode" name="pincode">
+                        <input type="text" required class="form-control" id="pincode" name="pincode">
                         <label for="">Mobile</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile">
+                        <input type="text" required class="form-control" id="mobile" name="mobile">
                         <input type="text" name="userId" value="{{user._id}}" hidden>
                     </div>
                 </div>
@@ -31,7 +31,10 @@
                                 Online Payment
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2">Confirm Order</button>
+                        <button type="submit" class="btn bg-black text-white mt-2">
+                            Confirm Order
+                            <i class="fa-solid fa-spinner fa-spin-pulse " hidden></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -41,6 +44,9 @@
 <script>
     $("#checkout-form").submit((e) => {
         e.preventDefault()
+        var spinner = button.querySelector('.fa-solid.fa-spinner.fa-spin-pulse');
+        spinner.removeAttribute('hidden');
+        button.classList.remove('text-white');
         $.ajax({
             url: '/place-order',
             method: 'post',
@@ -58,7 +64,7 @@
         })
     })
     function razorpayPopUp(rzpInstanceOrderId, totalPrice, mongodbOrderId, user) {
-        const { Name, Email,PhoneNumber } = user
+        const { Name, Email, PhoneNumber } = user
         var options = {
             "key": "rzp_test_kbouakeYJ8qa0u", // Enter the Key ID generated from RazorPay Dashboard
             "amount": (totalPrice) * 100, // amount in paise format

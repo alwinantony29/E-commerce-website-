@@ -1,5 +1,5 @@
 
-<div class="row my-5 justify-content-center" style="">
+<div class="row pt-5 justify-content-center bg-warning h-100" style="">
  <div class="col-10 col-sm-8 col-md-8 m-auto mt-4 mb-3">
   <div class="container  mt-5 ">
     <h1 class="text-center">Login</h1>
@@ -9,16 +9,16 @@
     <h4 class="rounded text-danger p-1 text-center" >{{loginErr}}</h4>
     {{/if}}
     <label class="p-2 fw-bold" >Email address</label>
-    <input autofocus  name="Email" type="email" class="form-control" placeholder="Enter email" required>
-    <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+    <input autofocus  name="Email" type="email" class="mb-2 form-control" placeholder="Enter email" required>
+    <small class="form-text text-light ">We'll never share your email with anyone else.</small>
   </div>
   <div class="form-group">
     <label class="p-2 fw-bold" >Password</label>
     <input  name="Password" type="password" class="form-control mb-2"  placeholder="Password" required>
   </div>
  
-  <a href="/signup" class="mt-5">Don't have an account? Create one Now</a><br>
-  <button type="submit" class="my-3 ms-50 btn btn-primary text-center">Login</button>
+  <a href="/signup" class="mt-5 text-white fw-bold">Don't have an account? Create one Now</a><br>
+  <button type="submit" class="my-3 ms-50 btn btn-light text-warning fw-bold text-center">Login</button>
 </form>
 </div>
 </div>

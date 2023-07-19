@@ -1,6 +1,6 @@
 {{#if products}}
 
-<section class="my-5 py-5" style="font-family: 'Roboto', sans-serif;">
+<section class="bg-warning h-100  py-5" style="font-family: 'Roboto', sans-serif;">
     <div class="container ">
 
         <table class="table mt-5">
@@ -24,19 +24,20 @@
                     <td>Rs.{{this.product.Price}}</td>
 
                     <td>
-                        <button class="cart-item-count rounded px-2 me-3"
+                        <button class="cart-item-count rounded btn bg-black  me-3"
                             onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">
-                            -
+                            <i class="fa-solid fa-plus" style="color: #ecedef;"></i>
                         </button>
                         <span id="{{this.product._id}}">{{this.quantity}}</span>
-                        <button class="cart-item-count rounded ms-3"
+                        <button class="cart-item-count btn bg-black rounded ms-3"
                             onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">
-                            +
+                            <i class="fa-solid fa-minus" style="color: #e4e9f1;"></i>
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-danger"
-                            onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+                        <button class="btn text-white bg-black"
+                            onclick="removeProduct('{{this._id}}','{{this.product._id}}')"> <i
+                                class="fa-solid fa-trash"> </i>  Remove </button>
                     </td>
                 </tr>
                 {{/each}}
@@ -45,12 +46,14 @@
         </table>
         <hr>
         <h3 class="float-right mr-4 mt-3">Total : Rs. <span id="total">{{totalValue}}</span></h3>
-        <a href="/place-order" class="float-right btn btn-warning mb-4 ">Next</a>
+        <a href="/place-order" class="float-right btn bg-black text-white mb-4 ">Next
+<i class="fa-solid fa-angles-right fa-fade"></i>         </a>
     </div>
 </section>
 {{else}}
-<div class="w-100 text-center py-5 mt-5 " style="height: 81vh;">
-    <h1>Cart is Empty</h1>
+<div class="w-100 h-100 text-center py-5 bg-warning d-flex align-items-center justify-content-center "
+    style="height: 81vh;">
+    <h1>Cart is Empty <i class="fa-solid fa-heart-crack"></i> </h1>
 </div>
 {{/if}}
 
