@@ -155,7 +155,7 @@ router.get('/orders', verifyLogin, async (req, res) => {
   if (orders.length > 0) {
     orders.forEach(element => {
       element.date = element.date.toLocaleDateString("en-US", options)
-    });
+    })
   }
   res.render('user/orders', { user: req.session.user, orders })
 })

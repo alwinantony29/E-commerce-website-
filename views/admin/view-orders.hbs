@@ -1,0 +1,38 @@
+<section>
+    <div class="container h-80 align-items-center">
+        <table class="table mt-5" id="admin-table">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">PaymentID</th>
+                    <th scope="col">More</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orderList}}
+                <tr>
+                    <td>{{this.date}}</td>
+                    <td>{{this.deliveryDetails.address}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.totalAmount}}</td>
+                    <td>{{this.status}}</td>
+                    <td>{{this.paymentId}}</td>
+
+                    <td><a href="/admin/orders/{{this._id}}" class="btn bg-black text-white">View Details</a></td>
+
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+<script>
+
+    $(function () {
+        $('#admin-table').DataTable();
+    })
+</script>
