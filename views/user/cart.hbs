@@ -26,12 +26,12 @@
                     <td>
                         <button class="cart-item-count rounded btn bg-black  me-3"
                             onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">
-                            <i class="fa-solid fa-plus" style="color: #ecedef;"></i>
+                            <i class="fa-solid fa-minus" style="color: #e4e9f1;"></i>
                         </button>
                         <span id="{{this.product._id}}">{{this.quantity}}</span>
                         <button class="cart-item-count btn bg-black rounded ms-3"
                             onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">
-                            <i class="fa-solid fa-minus" style="color: #e4e9f1;"></i>
+                            <i class="fa-solid fa-plus" style="color: #ecedef;"></i>
                         </button>
                     </td>
                     <td>

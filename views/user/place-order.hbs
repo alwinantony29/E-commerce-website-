@@ -44,9 +44,8 @@
 <script>
     $("#checkout-form").submit((e) => {
         e.preventDefault()
-        var spinner = button.querySelector('.fa-solid.fa-spinner.fa-spin-pulse');
+        var spinner = document.querySelector('.fa-solid.fa-spinner.fa-spin-pulse');
         spinner.removeAttribute('hidden');
-        button.classList.remove('text-white');
         $.ajax({
             url: '/place-order',
             method: 'post',
