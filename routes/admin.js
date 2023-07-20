@@ -31,8 +31,8 @@ router.get('/add-product', function (req, res) {
 });
 
 router.post('/add-product', (req, res, next) => {
-  try {
-    productHelpers.addProduct(req.body, (_id) => {
+  
+    productHelpers.addProduct(req.body).then((_id)=>{
       console.log(_id);
       let image = req.files.Image;
       image.mv('public/product-images/' + _id + '.jpg', (err, done) => {
@@ -41,12 +41,11 @@ router.post('/add-product', (req, res, next) => {
         } else {
           console.log(err);
         }
-      });
-    });
-  } catch (error) {
+      })}).catch (error=>{
     next(error);
-  }
-});
+  })
+})
+
 
 router.get('/delete-product/:id', (req, res, next) => {
   try {
