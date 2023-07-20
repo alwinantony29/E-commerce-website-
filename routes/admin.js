@@ -77,21 +77,22 @@ router.get('/orders', (req, res) => {
     if (orderList.length > 0) {
       orderList.forEach(element => {
         element.date = element.date.toLocaleDateString("en-US", options)
-      })}
-    res.render('admin/view-orders',{admin:true, orderList })
+      })
+    }
+    res.render('admin/view-orders', { admin: true, orderList })
   })
 })
 
-router.get('/users',(req, res) => {   
-   userHelpers.getUserList().then((userList) => {  
-    res.render('admin/view-users',{ userList:userList,admin: true, }) 
+router.get('/users', (req, res) => {
+  userHelpers.getUserList().then((userList) => {
+    res.render('admin/view-users', { userList: userList, admin: true, })
   })
 })
-router.get("/orders/:orderID",(req,res)=>{
-  const orderID=req.params.orderID
-  orderHelpers.getOrderDetails(orderID).then(({user,order})=>{
-    console.log(user,order);
-    res.json({user,order})
+router.get("/orders/:orderID", (req, res) => {
+  const orderID = req.params.orderID
+  orderHelpers.getOrderDetails(orderID).then(({ user, order }) => {
+    console.log(user, order);
+    res.json({ user, order })
   })
 })
 
