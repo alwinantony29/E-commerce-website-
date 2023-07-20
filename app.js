@@ -11,7 +11,7 @@ var hbs=require('express-handlebars');
 var app = express();
 const { allowinsecurePrototypeAcess}=require('@handlebars/allow-prototype-access');
 var fileUpload=require('express-fileupload')
-var db=require('./config/connection')
+// var db=require('./config/connection')
 var session=require('express-session');
 const { log } = require('console');
 // view engine setup
@@ -25,10 +25,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 app.use(session({secret:"adisakke",cookie:{maxAge:6000000}}))
-db.connect((err)=>{
-  if(err) console.log("connection error"+err);
-  else console.log("Database connected to 27017");
-})
+// db.connect((err)=>{
+//   if(err) console.log("connection error"+err);
+//   else console.log("Database connected to 27017");
+// })
 
 
 app.use('/', userRouter);

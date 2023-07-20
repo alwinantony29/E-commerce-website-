@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('shopping-cart:server');
 var http = require('http');
+var db = require('../config/connection'); // Add the database connection module
 
 /**
  * Get port from environment and store in Express.
@@ -15,6 +16,13 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    process.exit(1); // Exit the application on connection error
+  } else {
+    console.log('Connected to the database successfully');
+   
 /**
  * Create HTTP server.
  */
@@ -28,7 +36,20 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+console.info(`Application started and listening at ${port}`);
+/**
+ * Event listener for HTTP server "listening" event.
+ */
 
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind); 
+}
+}
+});
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -77,14 +98,4 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
