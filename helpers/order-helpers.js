@@ -1,6 +1,5 @@
 var db = require('../config/connection')
-var collection = require('../config/collections');
-const collections = require('../config/collections');
+const collection = require('../config/collections');
 var objectId = require('mongodb').ObjectId
 
 module.exports = {
@@ -76,10 +75,10 @@ module.exports = {
     getOrderDetails: async (orderID) => {
         return new Promise(async (resolve, reject) => {
 
-            const orders = await db.get().collection(collection.ORDER_COLLECTION)
+            const orders = await db.get().collection(collection.ORDER_COLLECTION )
                 .find({ _id: objectId(orderID) }).toArray()
             const userID = orders[0].userId
-            const user = await db.get().collection(collections.USER_COLLECTION)
+            const user = await db.get().collection(collection.USER_COLLECTION)
             .find({ _id: objectId(userID) }, { projection: { Password: 0 } }).toArray()
             resolve({ user: user[0], order: orders[0] })
         })

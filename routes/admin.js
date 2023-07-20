@@ -3,6 +3,7 @@ const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 var orderHelpers = require('../helpers/order-helpers');
 const userHelpers = require('../helpers/user-helpers');
+const { log } = require('debug/src/browser');
 
 router.get('/login', (req, res, next) => {
   try {
@@ -70,16 +71,17 @@ router.get('/edit-product/:id', async (req, res, next) => {
 
 router.post('/edit-product/:id', async (req, res, next) => {
   try {
-    await productHelpers.updateProduct(req.params.id, req.body);
+     await productHelpers.updateProduct(req.params.id, req.body);
     if (req.files) {
       let image = req.files.Image;
       image.mv('public/product-images/' + req.params.id + '.jpg');
-      res.redirect('/admin');
     }
+    res.redirect('/admin');
   } catch (error) {
+    console.log(error);
     next(error);
   }
-});
+})
 
 router.get('/orders', (req, res, next) => {
   try {

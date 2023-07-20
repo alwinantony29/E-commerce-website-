@@ -7,11 +7,10 @@ var objectId = require('mongodb').ObjectId
 module.exports = {
 
     addProduct: (product) => {
-        return new Promise((resolve,reject)=>{
-
+        console.log('function call');
+        return new Promise((resolve, reject) => {
             console.log(product);
             product.Price = parseFloat(product.Price)
-            
             db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
                 resolve(data.insertedId)
             }).catch((error) => {
@@ -70,8 +69,9 @@ module.exports = {
                         Category: proDetails.Category
                     }
                 }).then((response) => {
+                    console.log("done updating",response);
                     resolve()
-                }).catch(err => {
+                }).catch((err) => {
                     console.log(err);
                     reject(err)
                 })
