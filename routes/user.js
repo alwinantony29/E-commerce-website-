@@ -87,9 +87,15 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
-  req.session.user = false
   req.session.userLoggedIn = false
-  res.redirect('/')
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    } else {
+      console.log("log out succesfull");
+      res.redirect('/login'); 
+    }
+  });
 })
 
 router.get('/cart', verifyLogin, async (req, res, next) => {
