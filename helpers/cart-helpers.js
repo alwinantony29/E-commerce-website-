@@ -5,18 +5,18 @@ var db=require('../config/connection')
 module.exports={
     addToCart: (proId, userId) => {
         let proObj = {
-            item: objectId(proId),
+            item: new objectId(proId),
             quantity: 1
         }
         return new Promise(async (resolve, reject) => {
-            let userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
+            let userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: new objectId(userId) })
 
             if (userCart) {
                 let proExist = userCart.products.findIndex(product => product.item == proId)
                 console.log('proexist' + proExist);
                 if (proExist != -1) {
                     db.get().collection(collection.CART_COLLECTION)
-                        .updateOne({ user: objectId(userId), 'products.item': objectId(proId) },
+                        .updateOne({ user: new objectId(userId), 'products.item': objectId(proId) },
                             {
                                 $inc: { 'products.$.quantity': 1 }
                             }).then(() => {
@@ -24,7 +24,7 @@ module.exports={
                             })
                 } else {
                     db.get().collection(collection.CART_COLLECTION)
-                        .updateOne({ user: objectId(userId) },
+                        .updateOne({ user: new objectId(userId) },
                             {
                                 $push: { products: proObj }
                             }).then((response) => {
@@ -34,7 +34,7 @@ module.exports={
             } else {
                 let cartObj = {
 
-                    user: objectId(userId),
+                    user: new objectId(userId),
                     products: [proObj],
                 }
                 db.get().collection(collection.CART_COLLECTION).insertOne(cartObj).then((response) => {
@@ -47,7 +47,7 @@ module.exports={
         return new Promise(async (resolve, reject) => {
             let cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
                 {
-                    $match: { user: objectId(userId) }
+                    $match: { user: new objectId(userId) }
                 }, {
                     $unwind: '$products'
                 }, {
@@ -77,7 +77,7 @@ module.exports={
 
         return new Promise(async (resolve, reject) => {
             let count = 0
-            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
+            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user:new objectId(userId) })
             if (cart) {
                 cart.products.forEach(element => {
                     console.log(element.quantity);
@@ -98,9 +98,9 @@ module.exports={
  
             if (count == -1 && quantity == 1) {
 
-                db.get().collection(collection.CART_COLLECTION).updateOne({ _id: objectId(details.cart) },
+                db.get().collection(collection.CART_COLLECTION).updateOne({ _id:new objectId(details.cart) },
                     {
-                        $pull: { products: { item: objectId(details.product) } }
+                        $pull: { products: { item:new objectId(details.product) } }
                     }).then((response) => {
                         console.log(response);
                         resolve({ removeProduct: true })
@@ -108,7 +108,7 @@ module.exports={
             } else {
 
                 db.get().collection(collection.CART_COLLECTION)
-                    .updateOne({ _id: objectId(details.cart), 'products.item': objectId(details.product) },
+                    .updateOne({ _id:new objectId(details.cart), 'products.item':new objectId(details.product) },
                         {
                             $inc: { 'products.$.quantity': count }
                         }).then((response) => {
@@ -127,7 +127,7 @@ module.exports={
 
             let total = await db.get().collection(collection.CART_COLLECTION).aggregate([
                 {
-                    $match: { user: objectId(userId) }
+                    $match: { user: new objectId(userId) }
                 }, {
                     $unwind: '$products'
                 }, {
@@ -170,7 +170,7 @@ module.exports={
 
             try {
 
-                let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
+                let cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user:new objectId(userId) })
                 resolve(cart.products)
 
             } catch (err) {
@@ -183,9 +183,9 @@ module.exports={
 
         return new Promise((resolve, reject) => {
 
-            db.get().collection(collection.CART_COLLECTION).updateOne({ _id: objectId(details.cart) },
+            db.get().collection(collection.CART_COLLECTION).updateOne({ _id:new objectId(details.cart) },
                 {
-                    $pull: { products: { item: objectId(details.product) } }
+                    $pull: { products: { item:new objectId(details.product) } }
                 }).then((response) => {
                     console.log(response);
                     resolve({ removeProduct: true })

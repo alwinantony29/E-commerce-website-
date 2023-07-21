@@ -19,7 +19,7 @@ const verifyLogin = (req, res, next) => {
 router.get('/', async function (req, res, next) {
   try {
     let user = req.session.user;
-    console.log(user);
+    // console.log("user from cookies: ",req.cookies.user);
     let cartCount;
     if (user) {
       cartCount = await cartHelpers.getCartCount(req.session.user._id);
@@ -51,8 +51,10 @@ router.post('/login', (req, res, next) => {
   userHelpers.doLogin(req.body)
     .then((response) => {
       if (response.status) {
+        console.log("login response",response.user);
         req.session.user = response.user;
         req.session.user.loggedIn = true;
+       // res.cookie('user', "alwin", { maxAge: 24 * 60 * 60 * 1000 });
         res.redirect('/');
       } else {
         req.session.userloginErr = 'Invalid username or Password';
@@ -81,6 +83,7 @@ router.post('/signup', (req, res, next) => {
       console.log(response);
       req.session.user = response;
       req.session.user.loggedIn = true;
+      // res.cookie('user', response._id, { maxAge: 24 * 60 * 60 * 1000 });
       res.redirect('/');
     })
     .catch((error) => {
@@ -89,7 +92,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
-  req.session.user = null
+  // res.cookie('user', '', { expires: new Date(0) });
   req.session.userLoggedIn = false
   res.redirect('/')
 })

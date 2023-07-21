@@ -7,7 +7,7 @@ var objectId = require('mongodb').ObjectId
 const Razorpay = require('razorpay');
 const sha256 = require('js-sha256');
 const crypto = require('crypto');
-const { ObjectId } = require('mongodb')
+// const { ObjectId } = require('mongodb')
 
 module.exports = {
 
@@ -72,7 +72,7 @@ module.exports = {
 
             console.log("userid" + userId);
             let orders = await db.get().collection(collection.ORDER_COLLECTION)
-                .find({ userId: objectId(userId) }).toArray()
+                .find({ userId:new objectId(userId) }).toArray()
             console.log("Orders: " + orders);
             resolve(orders)
         })
@@ -124,7 +124,7 @@ module.exports = {
         console.log("update params", id, paymentId);
         try {
             const result = await db.get().collection(collection.ORDER_COLLECTION)
-                .updateOne({ _id: ObjectId(id) }, { $set: { status: "placed", paymentId: paymentId } }, { returnOriginal: false })
+                .updateOne({ _id:new objectId(id) }, { $set: { status: "placed", paymentId: paymentId } }, { returnOriginal: false })
             console.log("updation result: ", result);
 
         } catch (err) {

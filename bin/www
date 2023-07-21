@@ -19,7 +19,7 @@ app.set('port', port);
 db.connect((err) => {
   if (err) {
     console.error('Error connecting to the database:', err);
-    process.exit(1); // Exit the application on connection error
+    //process.exit(1); // Exit the application on connection error
   } else {
     console.log('Connected to the database successfully');
    

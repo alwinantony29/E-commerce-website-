@@ -24,7 +24,7 @@ module.exports = {
                     address: order.address,
                     pincode: order.pincode
                 },
-                userId: objectId(order.userId),
+                userId:new objectId(order.userId),
                 paymentMethod: order.paymentMethod,
                 products: products,
                 totalAmount: total,
@@ -33,7 +33,7 @@ module.exports = {
             }
 
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
-                db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(order.userId) })
+                db.get().collection(collection.CART_COLLECTION).deleteOne({ user:new objectId(order.userId) })
                 resolve(response)
             })
         })
@@ -45,7 +45,7 @@ module.exports = {
 
             let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
-                    $match: { _id: objectId(orderId) }
+                    $match: { _id:new objectId(orderId) }
                 }, {
                     $unwind: '$products'
                 }, {
@@ -76,10 +76,10 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             const orders = await db.get().collection(collection.ORDER_COLLECTION )
-                .find({ _id: objectId(orderID) }).toArray()
+                .find({ _id:new objectId(orderID) }).toArray()
             const userID = orders[0].userId
             const user = await db.get().collection(collection.USER_COLLECTION)
-            .find({ _id: objectId(userID) }, { projection: { Password: 0 } }).toArray()
+            .find({ _id:new objectId(userID) }, { projection: { Password: 0 } }).toArray()
             resolve({ user: user[0], order: orders[0] })
         })
     },

@@ -14,6 +14,7 @@ var fileUpload = require('express-fileupload')
 // var db=require('./config/connection')
 var session = require('express-session');
 const { log } = require('console');
+const MongoStore = require('connect-mongo');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -29,9 +30,13 @@ app.use(
     secret: process.env.SESSION_SECRET, // Secret used to sign the session ID cookie (can be any random string)
     cookie: { maxAge: 6000000 }, // Cookie settings
     resave: false, // Removed (deprecated option)
-    saveUninitialized: false // Removed (deprecated option)
+    saveUninitialized: false, // Removed (deprecated option)
+    store: new MongoStore({
+      mongoUrl: `${process.env.MONGODB_URI}`, // Replace with your MongoDB connection string and database name
+      ttl: 60 * 60 * 60, // Session TTL (time-to-live) in seconds, optional
+    }),
   })
-);
+) 
 // db.connect((err)=>{
 //   if(err) console.log("connection error"+err);
 //   else console.log("Database connected to 27017");

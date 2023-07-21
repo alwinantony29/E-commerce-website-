@@ -34,7 +34,7 @@ module.exports = {
     },
     deleteProduct: (proId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: objectId(proId) }).then((response) => {
+            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id:new objectId(proId) }).then((response) => {
                 console.log(response);
                 resolve(response);
             }).catch((error) => {
@@ -47,7 +47,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.get()
                 .collection(collection.PRODUCT_COLLECTION)
-                .findOne({ _id: objectId(proId) })
+                .findOne({ _id:new objectId(proId) })
                 .then((product) => {
                     resolve(product);
                 })
@@ -61,7 +61,7 @@ module.exports = {
     updateProduct: (proId, proDetails) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION)
-                .updateOne({ _id: objectId(proId) }, {
+                .updateOne({ _id:new objectId(proId) }, {
                     $set: {
                         Name: proDetails.Name,
                         Description: proDetails.Description,
