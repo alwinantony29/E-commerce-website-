@@ -28,12 +28,12 @@ app.use(fileUpload());
 app.use(
   session({
     secret: process.env.SESSION_SECRET, // Secret used to sign the session ID cookie (can be any random string)
-    cookie: { maxAge: 6000000 }, // Cookie settings
+    cookie: { maxAge: 3600000 }, // Cookie settings
     resave: false, // Removed (deprecated option)
     saveUninitialized: false, // Removed (deprecated option)
     store: new MongoStore({
       mongoUrl: `${process.env.MONGODB_URI}`, // Replace with your MongoDB connection string and database name
-      ttl: 60 * 60 * 60, // Session TTL (time-to-live) in seconds, optional
+      ttl: 10 * 60 * 60, // Session TTL (time-to-live) in seconds, optional
     }),
   })
 ) 
