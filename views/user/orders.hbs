@@ -1,35 +1,39 @@
-<section class="bg-warning h-100 pb-5 d-flex justify-content-center align-items-center">
+<section class="text-center bg-warning h-100 pb-5 d-flex justify-content-center align-items-center">
     <div class="container ">
-       <table class="table ">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Address</th>
-                <th>Pincode</th>
-                <th>Mobile</th>
-                <th>Amount</th>
-                <th>Payment</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each orders}}
-            <tr>
-                <td>{{this.date}}</td>
-                <td>{{this.deliveryDetails.address}}</td>
-                <td>{{this.deliveryDetails.pincode}}</td>
-                <td>{{this.deliveryDetails.mobile}}</td>
-                <td>{{this.totalAmount}}</td>
-                <td>{{this.paymentMethod}}</td>
-                <td>{{this.status}}</td>
-                <td>
-                    <a href="/view-order-products/{{this._id}}" class="btn bg-black text-white">View products</a>
-                </td>
-            </tr>
-            {{/each}}
-        </tbody>
-       </table>
+        {{#if orders}}
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Address</th>
+                    <th>Pincode</th>
+                    <th>Mobile</th>
+                    <th>Amount</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <td>{{this.date}}</td>
+                    <td>{{this.deliveryDetails.address}}</td>
+                    <td>{{this.deliveryDetails.pincode}}</td>
+                    <td>{{this.deliveryDetails.mobile}}</td>
+                    <td>{{this.totalAmount}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.status}}</td>
+                    <td>
+                        <a href="/view-order-products/{{this._id}}" class="btn bg-black text-white">View products</a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <h1>Seems like you haven't ordered anything yet <i class="fa-solid fa-heart-crack"></i></h1>
+        {{/if}}
     </div>
     <div class="my-5 py-3"></div>
 </section>
