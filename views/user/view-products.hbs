@@ -62,7 +62,7 @@
       data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
-    </button>  
+    </button>
   </div>
 </section>
 {{!-- cake section --}}
@@ -78,11 +78,30 @@
           <h4 class="card-title h-10">{{this.Name}}</h4>
           <p>Price: {{this.Price}}</p>
           {{!-- <p class="card-text">Description: {{this.Description}}</p> --}}
-          <button onclick="addToCart('{{this._id}}')" class="btn btn-warning">Add to cart</button>
+          <button id="liveToastBtn" onclick="addToCart('{{this._id}}')" class="btn btn-warning">Add to cart  <i id='product-{{this._id}}' class="fa-solid fa-spinner fa-spin-pulse " hidden></i></button>
         </div>
       </div>
       {{/each}}
-
     </div>
   </div>
 </section>
+{{!-- toast --}}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body d-flex justify-content-between">
+      <h5>Cake added to Cart.</h5>
+      <button type="button" class="ms-auto btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+{{!-- <script>
+  const toastTrigger = document.getElementById('liveToastBtn')
+  const toastLiveExample = document.getElementById('liveToast')
+  if (toastTrigger) {
+    toastTrigger.addEventListener('click', () => {
+      console.log("clicked")
+      const toast = new bootstrap.Toast(toastLiveExample)
+      toast.show()
+    })
+  }
+</script> --}}

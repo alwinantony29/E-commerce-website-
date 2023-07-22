@@ -16,7 +16,7 @@ module.exports={
                 console.log('proexist' + proExist);
                 if (proExist != -1) {
                     db.get().collection(collection.CART_COLLECTION)
-                        .updateOne({ user: new objectId(userId), 'products.item': objectId(proId) },
+                        .updateOne({ user: new objectId(userId), 'products.item':new objectId(proId) },
                             {
                                 $inc: { 'products.$.quantity': 1 }
                             }).then(() => {
