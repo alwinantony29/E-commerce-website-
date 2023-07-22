@@ -87,9 +87,15 @@
 </section>
 {{!-- toast --}}
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div id="add-to-cart-success" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-body d-flex justify-content-between">
-      <h5>Cake added to Cart.</h5>
+      <h5>Cake added to Cart. ❤</h5>
+      <button type="button" class="ms-auto btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+  <div id="add-to-cart-failure" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body d-flex justify-content-between">
+      <h5>Try signing in</h5>
       <button type="button" class="ms-auto btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
   </div>
