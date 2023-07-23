@@ -22,8 +22,6 @@ function addToCart(proId) {
         toast.show()
         console.log("failed to add");
         spinner.setAttribute('hidden', true);
-
-
       }
 
     }
